@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>抽奖</title>
+  <link rel="stylesheet" href="./main.css">
+  <style>
+    #record {
+      max-height: 500px;
+      padding: 0 ;
+      margin:  0 ;
+      text-align: center;
+      overflow-y: auto;
+      display: none ;
+      list-style: none;
+      position: fixed;
+      z-index: 10;
+      top:10%;
+      /* bottom: 10%; */
+      right: 5%;
+      left: 80%;
+      /* border: 1px solid #c90000; */
+      background-color: #f1f1f1;
+    }
+    #record > li {
+      padding: 0 ;
+      margin:  0 ;
+      height: 3em;
+      line-height: 3em;
+      font-size: 1.5em;
+      font-weight: 500;
+      color: #D90000;
+    }
+    #record > .title {
+      border-bottom: 1px solid #D90000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <section class="title">抽奖</section>
+    <section class="main">
+      
+    </section>
+    <section class="btns">
+      <button id='start'>开始</button>
+      <button id='stop'>停</button>
+      <button id='clear'>清空</button>
+    </section>
+  </div>
+  <ul id="record">
+    <!-- <li class="title">获奖工号</li>
+    <li>123456</li>
+    <li>234567</li>
+    <li>345678</li> -->
+  </ul>
+</body>
+<script>
+  let resContainer = document.querySelector('.main');
+  let start = document.getElementById('start');
+  let stop = document.getElementById('stop');
+  let clear = document.getElementById('clear');
+  let record = document.getElementById('record');
+
+  let currentVal ;
+  const fs = require('fs');
+  const { init, getResult ,getRandomInt, recordInt ,clearRecord ,checkVal } = require('./render');
+  let recordArr = [];
+  init(function (resArr) {
+    resContainer.innerHTML = '000000'
+    recordArr = resArr;
+    if (recordArr.length === 0) return ;
+    renderRecord(recordArr);
+    // alert(recordArr.join('|'));
+  })
+  let timer = null ;
+  start.addEventListener('click' ,function(){
+    if(timer) return false ;
+    timer = setInterval(renderRes,100) ;
+  })
+
+  stop.addEventListener('click',function(){
+    clearInterval(timer);
+    timer = null ;
+    while (checkVal(currentVal)) {
+      currentVal = getRandomInt() ;
+    }
+    renderRes(currentVal);
+    recordInt(currentVal);
+
+    
+    recordArr = getResult();
+    if (recordArr.length === 0) return;
+    renderRecord(recordArr);
+  })
+
+  clear.addEventListener('click', function () {
+    clearInterval(timer);
+    timer = null;
+    resContainer.innerHTML = '000000'
+    clearRecord();
+    clearRec();
+  })
+
+  function renderRes (res) {
+    // if(res) alert(res);
+    currentVal = res ? res : getRandomInt();
+    
+    resContainer.innerHTML = currentVal;
+  }
+
+  function renderRecord(arr){
+    let title = `<li class="title">获奖工号</li>`;
+    let str = '' ;
+    for(let num of arr) {
+      str +=  ` <li>${num}</li>` ;
+    }
+    record.style.display = 'block' ;
+    record.innerHTML = title + str ;
+  }
+
+  function clearRec(){
+    record.style.display = 'none';
+    record.innerHTML = '';
+  }
+</script>
+
+</html>

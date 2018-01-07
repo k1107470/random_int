@@ -1,0 +1,38 @@
+{
+  "name": "random_int",
+  "version": "1.0.0",
+  "description": "Get a random int",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": "",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "k1107470",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "~1.7.8"
+  },
+  "build": {
+    "appId": "com.k1107470.demo",
+    "copyright": "K1107470",
+    "productName": "random_int",
+    "dmg": {
+      "window": {
+        "x": 100,
+        "y": 100,
+        "width": 800,
+        "height": 600
+      }
+    },
+    "win": {}
+  }
+}
